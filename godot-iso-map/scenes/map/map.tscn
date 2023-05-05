@@ -1,0 +1,69 @@
+[gd_scene load_steps=12 format=3 uid="uid://cqeh7rggx22o7"]
+
+[ext_resource type="Script" path="res://scenes/map/map.gd" id="1_giif0"]
+[ext_resource type="Texture2D" uid="uid://bqw1m88ubglfd" path="res://assets/map/base.png" id="1_kihcf"]
+[ext_resource type="Texture2D" uid="uid://bx5ufc7bqcy0d" path="res://assets/map/render.png" id="2_201o7"]
+[ext_resource type="Texture2D" uid="uid://b2vgc4t1ln0wo" path="res://assets/map/highlight.png" id="3_4oxqa"]
+[ext_resource type="Script" path="res://scenes/map/highlight.gd" id="5_t6r60"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pnyql"]
+texture = ExtResource("1_kihcf")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_36bgv"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_pnyql")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bbqal"]
+texture = ExtResource("2_201o7")
+texture_region_size = Vector2i(64, 64)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -16)
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, -16)
+3:0/0 = 0
+3:0/0/texture_origin = Vector2i(0, -16)
+4:0/0 = 0
+4:0/0/texture_origin = Vector2i(0, -16)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ry6hh"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_bbqal")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0nr35"]
+texture = ExtResource("3_4oxqa")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_q3urs"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_0nr35")
+
+[node name="Map" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_giif0")
+
+[node name="Base" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_36bgv")
+format = 2
+
+[node name="Render" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_ry6hh")
+format = 2
+
+[node name="Highlight" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_q3urs")
+format = 2
+script = ExtResource("5_t6r60")
