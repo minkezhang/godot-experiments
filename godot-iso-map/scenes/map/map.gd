@@ -27,6 +27,53 @@ func _base_to_render_cell(layer: int, ortho: Vector2i) -> Vector2i:
 	# This assumes the tile_layout property of the TileSet is DIAMOND_DOWN.
 	return Vector2i(ortho.x - layer, ortho.y - layer)
 
+## Get neighboring apparent cells which the current mouse position may be
+## targeting.
+##
+## A fully opaque isometric tile is rendered as a hexagon. Any detected cell D
+## may overlap up to four other hexagons --
+##
+##  A
+## B C
+##  D
+##
+## Depending on if the click is detected on the left or right side of the cell,
+## we can filter out either B or C.
+##
+## Returns the apparent neighbors in reverse draw order (that is, return D,
+## then either B or C, then A).
+func _get_neighbors_apparent(local: Vector2) -> Array[Vector2i]:
+	var apparent = $Render.local_to_map(local)
+	var offset = local - $Render.map_to_local(apparent)
+	# If X < 0, then the cursor lies on the left half of the tile; this means
+	# that we need to check for partial left-side occlusion.
+	if offset.x < 0:
+		return [
+			apparent,                                  # D
+			Vector2i(apparent.x - 1, apparent.y),      # B
+			Vector2i(apparent.x - 1, apparent.y - 1),  # A
+
+		]
+	return [
+			apparent,                                  # D
+			Vector2i(apparent.x, apparent.y - 1),      # C
+			Vector2i(apparent.x - 1, apparent.y - 1),  # A
+	]
+
+## Returns the list of true cell positions at each layer, if such a cell exists.
+##
+## Returned cells are in reverse draw order, and is represented as (x, y, z).
+func _get_rendered_stack(apparent_neighbors: Array[Vector2i]) -> Array[Vector3i]:
+	var stack : Array[Vector3i] = []
+	var actual : Vector2i
+	for layer in range($Base.get_layers_count() - 1, -1, -1):
+		for apparent in apparent_neighbors:
+			actual.x = apparent.x + layer
+			actual.y = apparent.y + layer
+			if cell_is_occupied(layer, actual):
+				stack.append_array([Vector3i(actual.x, actual.y, layer)])
+	return stack
+
 func cell_is_occupied(layer: int, actual: Vector2i) -> bool:
 	return $Base.get_cell_source_id(layer, actual) >= 0 and (
 		$Base.get_cell_atlas_coords(layer, actual) != void_atlas)
