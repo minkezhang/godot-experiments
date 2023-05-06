@@ -70,11 +70,48 @@ func _get_rendered_stack(apparent_neighbors: Array[Vector2i]) -> Array[Vector3i]
 		for apparent in apparent_neighbors:
 			actual.x = apparent.x + layer
 			actual.y = apparent.y + layer
-			if cell_is_occupied(layer, actual):
+			if _cell_is_occupied(layer, actual):
 				stack.append_array([Vector3i(actual.x, actual.y, layer)])
 	return stack
 
-func cell_is_occupied(layer: int, actual: Vector2i) -> bool:
+func _get_selected_tile(local: Vector2, rendered_stack: Array[Vector3i]) -> Vector3i:
+	var origin = Vector2(32, 16)# Vector2(32, 32)  DEBUG------------------------------------------------------------------
+	for rendered in rendered_stack:
+		# Calculate which pixel to inspect in the sprite.
+		var offset : Vector2i = local - $Render.map_to_local(
+			Vector2(
+				rendered.x - rendered.z,
+				rendered.y - rendered.z)) + origin
+		
+		print("DEBUG(map): offset for rendered = %s: %s" % [rendered, offset])
+		var atlas_cell = $Base.get_cell_atlas_coords(rendered.z, Vector2i(rendered.x, rendered.y))
+		var source_id = $Base.get_cell_source_id(rendered.z, Vector2i(rendered.x, rendered.y))
+		var source = $Mask.tile_set.get_source(source_id)
+		
+		var tile_origin = Vector2i(
+			source.texture_region_size.x * source.get_tile_at_coords(atlas_cell).x,
+			source.texture_region_size.y * source.get_tile_at_coords(atlas_cell).y,
+		)
+		var check = source.texture.get_image().get_pixelv(tile_origin + offset)
+		if check == Color.TRANSPARENT:
+			pass
+		if check == Color.WHITE:
+			return rendered
+		"""
+		print(
+			source.texture.get_image().get_pixelv(tile_origin + offset),
+		)
+		print(
+			"WHITE", source.texture.get_image().get_pixelv(Vector2i(160, 16)),
+		)
+		print(
+			"BLACK", source.texture.get_image().get_pixelv(Vector2i(160, 48)),
+		)
+		"""
+	
+	return Vector3i(-1, -1, -1)  # Invalid tile.
+
+func _cell_is_occupied(layer: int, actual: Vector2i) -> bool:
 	return $Base.get_cell_source_id(layer, actual) >= 0 and (
 		$Base.get_cell_atlas_coords(layer, actual) != void_atlas)
 
@@ -91,7 +128,7 @@ func select_cell(local: Vector2):
 	var n = $Base.get_layers_count()
 	for l in range(n - 1, -1, -1):
 		var shift = Vector2i(l, l)
-		if cell_is_occupied(l, apparent + shift):
+		if _cell_is_occupied(l, apparent + shift):
 			found = true
 			layer = l
 			actual = apparent + shift
@@ -101,7 +138,7 @@ func select_cell(local: Vector2):
 		return {}
 	
 	# Cannot select a cell if the immediate layer above is occupied.
-	if layer + 1 < n and cell_is_occupied(layer + 1, actual):
+	if layer + 1 < n and _cell_is_occupied(layer + 1, actual):
 		return {}
 	
 	# We do not need to check cells in the same layer.
@@ -130,7 +167,7 @@ func select_cell(local: Vector2):
 			# i.e. A is obscured by C.
 			check = Vector2i(1, 0)
 		
-		if cell_is_occupied(l, actual + check + shift):
+		if _cell_is_occupied(l, actual + check + shift):
 			return {}
 	
 	return {
@@ -158,7 +195,8 @@ func _ready():
 		$Highlight.add_layer(i)
 		$Highlight.set_layer_y_sort_enabled(i, true)
 		$Highlight.set_layer_z_index(i, i)
-
+		
+		# Copy corresponding textures to the rendered TileMap.
 		for c in $Base.get_used_cells(i):
 			var atlas = $Base.get_cell_atlas_coords(i, c)
 			$Render.set_cell(
