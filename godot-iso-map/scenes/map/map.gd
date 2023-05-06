@@ -83,7 +83,6 @@ func _get_selected_tile(local: Vector2, rendered_stack: Array[Vector3i]) -> Vect
 				rendered.x - rendered.z,
 				rendered.y - rendered.z)) + origin
 		
-		print("DEBUG(map): offset for rendered = %s: %s" % [rendered, offset])
 		var atlas_cell = $Base.get_cell_atlas_coords(rendered.z, Vector2i(rendered.x, rendered.y))
 		var source_id = $Base.get_cell_source_id(rendered.z, Vector2i(rendered.x, rendered.y))
 		var source = $Mask.tile_set.get_source(source_id)
@@ -93,21 +92,17 @@ func _get_selected_tile(local: Vector2, rendered_stack: Array[Vector3i]) -> Vect
 			source.texture_region_size.y * source.get_tile_at_coords(atlas_cell).y,
 		)
 		var check = source.texture.get_image().get_pixelv(tile_origin + offset)
-		if check == Color.TRANSPARENT:
-			pass
+		
+		# We have an opaque part of the block and cannot check tiles lower in the stack.
+		if check == Color.BLACK:
+			break
+		
+		# We have found a target tile.
 		if check == Color.WHITE:
 			return rendered
-		"""
-		print(
-			source.texture.get_image().get_pixelv(tile_origin + offset),
-		)
-		print(
-			"WHITE", source.texture.get_image().get_pixelv(Vector2i(160, 16)),
-		)
-		print(
-			"BLACK", source.texture.get_image().get_pixelv(Vector2i(160, 48)),
-		)
-		"""
+			
+		# Else, we have hit a transparent part of the mask, and should continue
+		# to the next tile in the stack.
 	
 	return Vector3i(-1, -1, -1)  # Invalid tile.
 
@@ -115,66 +110,27 @@ func _cell_is_occupied(layer: int, actual: Vector2i) -> bool:
 	return $Base.get_cell_source_id(layer, actual) >= 0 and (
 		$Base.get_cell_atlas_coords(layer, actual) != void_atlas)
 
-## Select the appropriate (layer, cell) from the given local mouse coordinates.
-func select_cell(local: Vector2):
-	var apparent = $Render.local_to_map(local)
-	var actual : Vector2i
-	
-	var center = $Render.map_to_local(apparent)
-	var offset = local - center
-	
-	var layer : int
-	var found = false
-	var n = $Base.get_layers_count()
-	for l in range(n - 1, -1, -1):
-		var shift = Vector2i(l, l)
-		if _cell_is_occupied(l, apparent + shift):
-			found = true
-			layer = l
-			actual = apparent + shift
-			break
-	
-	if not found:
-		return {}
-	
-	# Cannot select a cell if the immediate layer above is occupied.
-	if layer + 1 < n and _cell_is_occupied(layer + 1, actual):
-		return {}
-	
-	# We do not need to check cells in the same layer.
-	for l in range(n - 1, layer, -1):
-		var shift = Vector2i(l - layer - 1, l - layer - 1)
-		
-		# Target may be obscured by cell on a higher level (i.e. A is obscured by
-		# D).
-		#
-		#  A
-		# B C
-		#  D
-		#
-		# We do not need to check the case where A is obscured by D; in this 
-		# case, the cell would never be visible, and we would have returned D.
-		var check : Vector2i
-		
-		# If X < 0, then the cursor lies on the left half of the tile; this
-		# means that we need to check for partial left-side occlusion.
-		if offset.x < 0:
-			# Target may be obscured by a left-adjacent cell on a higher level,
-			# i.e. A is obscured by B.
-			check = Vector2i(0, 1)
-		else:
-			# Target may be obscured by a right-adjacent cell on a higher level,
-			# i.e. A is obscured by C.
-			check = Vector2i(1, 0)
-		
-		if _cell_is_occupied(l, actual + check + shift):
-			return {}
-	
-	return {
-		"layer": layer,
-		"cell": actual,
-	}
+func select_cell(local: Vector2) -> Vector3i:
+	return _get_selected_tile(
+		local,
+		_get_rendered_stack(
+		_get_neighbors_apparent(local)))
 
+func highlight_cells(h : Array[Vector3i], t : int):
+	for c in $Highlight._highlights:
+		$Highlight.erase_cell(c.z, Vector2i(c.x - c.z, c.y - c.z))
+
+	$Highlight._highlights.clear()
+
+	for c in h:
+		if c.z >= 0:
+			var d = Vector2i(c.x - c.z, c.y - c.z)
+			$Highlight._highlights.append_array([c])
+			$Highlight.set_cell(
+				c.z,
+				d,
+				$Base.get_cell_source_id(c.z, Vector2i(c.x, c.y)),
+				$Base.get_cell_atlas_coords(c.z, Vector2i(c.x, c.y)))
 
 ## Dynamically generates the Render TileMap.
 func _ready():
