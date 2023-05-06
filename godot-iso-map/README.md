@@ -1,5 +1,7 @@
 # Isometric Map
 
+See [demo](https://github.com/minkezhang/godot-experiments/raw/main/godot-iso-map/demo.mp4).
+
 The layout, collision hitboxes, and navigation layers are / will be all
 contained in the Base TileMap layer. This TileMap is used to generate the
 isometric view managed by the Render TileMap.
