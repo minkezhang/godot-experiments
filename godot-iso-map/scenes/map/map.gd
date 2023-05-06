@@ -9,16 +9,45 @@ extends Node2D
 ## An additional Highlight TIleMap UI layer is also included, which affords
 ## the ability to add more user-driven sprites to the scene.
 ##
-## Developers should not touch the Render and Highlight nodes.
+## Developers should only edit the Base TileMap.
 
-# Void cells are empty barriers used for pathfinding and collisions, but are
+# Void tiles are empty barriers used for pathfinding and collisions, but are
 # invisible when rendered.
-var void_atlas = Vector2i(0, 0)
+var void_atlas_coords = Vector2i(0, 0)
+
+## Identify an (x, y, z) tile in the Base TileMap which lies beneath the mouse
+## position.
+##
+## The (x, y) coordinates represent the "true" coordinates of the tile, not the
+## rendered offset as it appears in the Render TileMap. Will return (-1, -1, -1)
+## if the mouse is hovering over an opaque and unselectable cell, or if over the
+## void.
+func select_tile(local: Vector2) -> Vector3i:
+	return _get_selected_tile(
+		local,
+		_get_stack(
+		_get_neighbors_apparent(local)))
+
+## Draw a selection sprite over the given tiles.
+func highlight_tiles(cells: Array[Vector3i]):
+	for c in $Highlight._highlights:
+		$Highlight.erase_cell(c.z, _base_to_render_cell(c.z, Vector2i(c.x, c.y)))
+
+	$Highlight._highlights.clear()
+
+	for c in cells:
+		if c.z >= 0:
+			$Highlight._highlights.append_array([c])
+			$Highlight.set_cell(
+				c.z,
+				_base_to_render_cell(c.z, Vector2i(c.x, c.y)),
+				$Base.get_cell_source_id(c.z, Vector2i(c.x, c.y)),
+				$Base.get_cell_atlas_coords(c.z, Vector2i(c.x, c.y)))
 
 ## Calculate the isometric map coordinates which corresponds to the input
 ## grid cell.
 ##
-## Isometric tiles need to convey depth, which means cells in higher orthogonal
+## Isometric tiles need to convey depth, which means tiles in higher orthogonal
 ## grid layers need to "float". 
 func _base_to_render_cell(layer: int, ortho: Vector2i) -> Vector2i:
 	# We are treating higher TileMap layers as higher in elevation, which means
@@ -30,14 +59,16 @@ func _base_to_render_cell(layer: int, ortho: Vector2i) -> Vector2i:
 ## Get neighboring apparent cells which the current mouse position may be
 ## targeting.
 ##
-## A fully opaque isometric tile is rendered as a hexagon. Any detected cell D
-## may overlap up to four other hexagons --
+## A fully opaque isometric tile is rendered as a hexagon. Any detected tile D
+## may overlap up to three other hexagons --
 ##
 ##  A
 ## B C
 ##  D
 ##
-## Depending on if the click is detected on the left or right side of the cell,
+##  ^ camera
+##
+## Depending on if the click is detected on the left or right side of the tile,
 ## we can filter out either B or C.
 ##
 ## Returns the apparent neighbors in reverse draw order (that is, return D,
@@ -60,10 +91,12 @@ func _get_neighbors_apparent(local: Vector2) -> Array[Vector2i]:
 			Vector2i(apparent.x - 1, apparent.y - 1),  # A
 	]
 
-## Returns the list of true cell positions at each layer, if such a cell exists.
+## Returns the list of true cell positions at each layer, if a tile exists at
+## the cell position.
 ##
-## Returned cells are in reverse draw order, and is represented as (x, y, z).
-func _get_rendered_stack(apparent_neighbors: Array[Vector2i]) -> Array[Vector3i]:
+## Returned positions are in reverse draw order, and is represented as
+## (x, y, z).
+func _get_stack(apparent_neighbors: Array[Vector2i]) -> Array[Vector3i]:
 	var stack : Array[Vector3i] = []
 	var actual : Vector2i
 	for layer in range($Base.get_layers_count() - 1, -1, -1):
@@ -74,23 +107,22 @@ func _get_rendered_stack(apparent_neighbors: Array[Vector2i]) -> Array[Vector3i]
 				stack.append_array([Vector3i(actual.x, actual.y, layer)])
 	return stack
 
-func _get_selected_tile(local: Vector2, rendered_stack: Array[Vector3i]) -> Vector3i:
-	var origin = Vector2(32, 16)# Vector2(32, 32)  DEBUG------------------------------------------------------------------
-	for rendered in rendered_stack:
+func _get_selected_tile(local: Vector2, stack: Array[Vector3i]) -> Vector3i:
+	var origin = Vector2(32, 16)
+	for actual in stack:
 		# Calculate which pixel to inspect in the sprite.
 		var offset : Vector2i = local - $Render.map_to_local(
-			Vector2(
-				rendered.x - rendered.z,
-				rendered.y - rendered.z)) + origin
+				_base_to_render_cell(actual.z, Vector2i(actual.x, actual.y))) + origin
 		
-		var atlas_cell = $Base.get_cell_atlas_coords(rendered.z, Vector2i(rendered.x, rendered.y))
-		var source_id = $Base.get_cell_source_id(rendered.z, Vector2i(rendered.x, rendered.y))
+		var atlas_cell = $Base.get_cell_atlas_coords(actual.z, Vector2i(actual.x, actual.y))
+		var source_id = $Base.get_cell_source_id(actual.z, Vector2i(actual.x, actual.y))
 		var source = $Mask.tile_set.get_source(source_id)
-		
+		var source_cell = source.get_tile_at_coords(atlas_cell)
 		var tile_origin = Vector2i(
-			source.texture_region_size.x * source.get_tile_at_coords(atlas_cell).x,
-			source.texture_region_size.y * source.get_tile_at_coords(atlas_cell).y,
+			source_cell.x * source.texture_region_size.x,
+			source_cell.y * source.texture_region_size.y,
 		)
+		
 		var check = source.texture.get_image().get_pixelv(tile_origin + offset)
 		
 		# We have an opaque part of the block and cannot check tiles lower in the stack.
@@ -99,7 +131,7 @@ func _get_selected_tile(local: Vector2, rendered_stack: Array[Vector3i]) -> Vect
 		
 		# We have found a target tile.
 		if check == Color.WHITE:
-			return rendered
+			return actual
 			
 		# Else, we have hit a transparent part of the mask, and should continue
 		# to the next tile in the stack.
@@ -108,29 +140,7 @@ func _get_selected_tile(local: Vector2, rendered_stack: Array[Vector3i]) -> Vect
 
 func _cell_is_occupied(layer: int, actual: Vector2i) -> bool:
 	return $Base.get_cell_source_id(layer, actual) >= 0 and (
-		$Base.get_cell_atlas_coords(layer, actual) != void_atlas)
-
-func select_cell(local: Vector2) -> Vector3i:
-	return _get_selected_tile(
-		local,
-		_get_rendered_stack(
-		_get_neighbors_apparent(local)))
-
-func highlight_cells(h : Array[Vector3i], t : int):
-	for c in $Highlight._highlights:
-		$Highlight.erase_cell(c.z, Vector2i(c.x - c.z, c.y - c.z))
-
-	$Highlight._highlights.clear()
-
-	for c in h:
-		if c.z >= 0:
-			var d = Vector2i(c.x - c.z, c.y - c.z)
-			$Highlight._highlights.append_array([c])
-			$Highlight.set_cell(
-				c.z,
-				d,
-				$Base.get_cell_source_id(c.z, Vector2i(c.x, c.y)),
-				$Base.get_cell_atlas_coords(c.z, Vector2i(c.x, c.y)))
+		$Base.get_cell_atlas_coords(layer, actual) != void_atlas_coords)
 
 ## Dynamically generates the Render TileMap.
 func _ready():
