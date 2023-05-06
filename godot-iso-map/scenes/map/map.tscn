@@ -162,13 +162,16 @@ tile_set = SubResource("TileSet_36bgv")
 format = 2
 
 [node name="Render" type="TileMap" parent="."]
+y_sort_enabled = true
 tile_set = SubResource("TileSet_ry6hh")
 format = 2
 
 [node name="Highlight" type="TileMap" parent="."]
+y_sort_enabled = true
 tile_set = SubResource("TileSet_q3urs")
 format = 2
 
 [node name="Mask" type="TileMap" parent="."]
+visible = false
 tile_set = SubResource("TileSet_p61wa")
 format = 2
