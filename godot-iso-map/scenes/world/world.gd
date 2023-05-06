@@ -1,5 +1,10 @@
 extends Node2D
 
+# The _tile_groups and _tile_groups_lookup data structures are manually invoked
+# by the developer at runtime through a proxy function e.g. add_building().
+#
+# Mapmakers will need to take this into account when creating buildings on pre-
+# generated maps.
 var _tile_groups = [
 	[
 		Vector3i(5, -4, 1),
