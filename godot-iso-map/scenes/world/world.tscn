@@ -46,6 +46,9 @@ layer_5/y_sort_origin = 0
 layer_5/z_index = 0
 layer_5/tile_data = PackedInt32Array(-327680, 196608, 0, -262145, 196608, 0, -196609, 196608, 0, -65531, 196608, 0, -65532, 196608, 0, -65533, 196608, 0, 3, 196608, 0, 2, 196608, 0, 4, 262144, 0, 5, 262144, 0, 6, 196608, 0, 65541, 196608, 0, 65540, 196608, 0)
 
+[node name="Highlight" parent="Map" index="2"]
+script = null
+
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [editable path="Map"]

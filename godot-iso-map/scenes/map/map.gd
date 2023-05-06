@@ -13,7 +13,10 @@ extends Node2D
 
 # Void tiles are empty barriers used for pathfinding and collisions, but are
 # invisible when rendered.
-var void_atlas_coords = Vector2i(0, 0)
+const _VOID_ATLAS_COORDS = Vector2i(0, 0)
+const _INVALID_TILE = Vector3i(-1, -1, -1)
+
+var _highlights: Array[Vector3i]
 
 ## Identify an (x, y, z) tile in the Base TileMap which lies beneath the mouse
 ## position.
@@ -30,14 +33,14 @@ func select_tile(local: Vector2) -> Vector3i:
 
 ## Draw a selection sprite over the given tiles.
 func highlight_tiles(cells: Array[Vector3i]):
-	for c in $Highlight._highlights:
+	for c in _highlights:
 		$Highlight.erase_cell(c.z, _base_to_render_cell(c.z, Vector2i(c.x, c.y)))
 
-	$Highlight._highlights.clear()
+	_highlights.clear()
 
 	for c in cells:
-		if c.z >= 0:
-			$Highlight._highlights.append_array([c])
+		if c != _INVALID_TILE:
+			_highlights.append_array([c])
 			$Highlight.set_cell(
 				c.z,
 				_base_to_render_cell(c.z, Vector2i(c.x, c.y)),
@@ -97,8 +100,8 @@ func _get_neighbors_apparent(local: Vector2) -> Array[Vector2i]:
 ## Returned positions are in reverse draw order, and is represented as
 ## (x, y, z).
 func _get_stack(apparent_neighbors: Array[Vector2i]) -> Array[Vector3i]:
-	var stack : Array[Vector3i] = []
-	var actual : Vector2i
+	var stack: Array[Vector3i] = []
+	var actual = Vector2i(-1, -1)
 	for layer in range($Base.get_layers_count() - 1, -1, -1):
 		for apparent in apparent_neighbors:
 			actual.x = apparent.x + layer
@@ -111,7 +114,7 @@ func _get_selected_tile(local: Vector2, stack: Array[Vector3i]) -> Vector3i:
 	var origin = Vector2(32, 16)
 	for actual in stack:
 		# Calculate which pixel to inspect in the sprite.
-		var offset : Vector2i = local - $Render.map_to_local(
+		var offset: Vector2i = local - $Render.map_to_local(
 				_base_to_render_cell(actual.z, Vector2i(actual.x, actual.y))) + origin
 		
 		var atlas_cell = $Base.get_cell_atlas_coords(actual.z, Vector2i(actual.x, actual.y))
@@ -136,11 +139,11 @@ func _get_selected_tile(local: Vector2, stack: Array[Vector3i]) -> Vector3i:
 		# Else, we have hit a transparent part of the mask, and should continue
 		# to the next tile in the stack.
 	
-	return Vector3i(-1, -1, -1)  # Invalid tile.
+	return _INVALID_TILE
 
 func _cell_is_occupied(layer: int, actual: Vector2i) -> bool:
 	return $Base.get_cell_source_id(layer, actual) >= 0 and (
-		$Base.get_cell_atlas_coords(layer, actual) != void_atlas_coords)
+		$Base.get_cell_atlas_coords(layer, actual) != _VOID_ATLAS_COORDS)
 
 ## Dynamically generates the Render TileMap.
 func _ready():

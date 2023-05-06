@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cqeh7rggx22o7"]
+[gd_scene load_steps=14 format=3 uid="uid://cqeh7rggx22o7"]
 
 [ext_resource type="Script" path="res://scenes/map/map.gd" id="1_giif0"]
 [ext_resource type="Texture2D" uid="uid://bqw1m88ubglfd" path="res://assets/map/base.png" id="1_kihcf"]
 [ext_resource type="Texture2D" uid="uid://bx5ufc7bqcy0d" path="res://assets/map/render.png" id="2_201o7"]
 [ext_resource type="Texture2D" uid="uid://b2vgc4t1ln0wo" path="res://assets/map/highlight.png" id="3_4oxqa"]
-[ext_resource type="Script" path="res://scenes/map/highlight.gd" id="5_t6r60"]
 [ext_resource type="Texture2D" uid="uid://3cughohbml2v" path="res://assets/map/mask.png" id="6_mag1y"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pnyql"]
@@ -169,7 +168,6 @@ format = 2
 [node name="Highlight" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_q3urs")
 format = 2
-script = ExtResource("5_t6r60")
 
 [node name="Mask" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_p61wa")
