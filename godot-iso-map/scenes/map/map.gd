@@ -78,7 +78,7 @@ func select_tile(local: Vector2) -> Vector3i:
 			_get_neighbors_apparent(local)))
 
 ## Draw a selection sprite over the given tiles.
-func highlight_tiles(cells: Array[Vector3i]):
+func highlight_tiles(cells: Array):
 	for c in _highlights:
 		$Highlight.erase_cell(c.z, _base_to_render_cell(c.z, Vector2i(c.x, c.y)))
 
