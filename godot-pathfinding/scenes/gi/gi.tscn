@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgslvsnlw48io"]
+
+[ext_resource type="Texture2D" uid="uid://vicyfm1m8cpq" path="res://assets/character/gi.png" id="1_2p07h"]
+[ext_resource type="Script" path="res://scenes/gi/gi.gd" id="1_q8644"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4o23a"]
+size = Vector2(64, 64)
+
+[node name="GI" type="CharacterBody2D"]
+script = ExtResource("1_q8644")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4o23a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2p07h")

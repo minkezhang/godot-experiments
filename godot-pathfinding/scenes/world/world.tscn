@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1gr8ijvf7epl"]
+
+[ext_resource type="Script" path="res://scenes/world/world.gd" id="1_3jeis"]
+[ext_resource type="PackedScene" uid="uid://c7ds16c862bv" path="res://scenes/map/map.tscn" id="1_ed53r"]
+[ext_resource type="PackedScene" uid="uid://cgslvsnlw48io" path="res://scenes/gi/gi.tscn" id="2_dpbte"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_3jeis")
+
+[node name="Map" parent="." instance=ExtResource("1_ed53r")]
+
+[node name="GI" parent="Map" instance=ExtResource("2_dpbte")]
+position = Vector2(963, 284)
