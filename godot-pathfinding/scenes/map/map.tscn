@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://bqw1m88ubglfd" path="res://assets/map/base.png" id="1_ku38q"]
 [ext_resource type="Texture2D" uid="uid://dxp8ako2voee6" path="res://assets/map/highlight.png" id="3_y6pg3"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_cwqqe"]
-vertices = PackedVector2Array(-9, -32, 14.5, 1, 32, 32, -32, 32)
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_uua06"]
+vertices = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-9, -32, 14.5, 1, 32, 32, -32, 32)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)])
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5ocae"]
 vertices = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
@@ -28,7 +28,7 @@ texture_region_size = Vector2i(64, 64)
 2:0/0 = 0
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
-2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_cwqqe")
+2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uua06")
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
