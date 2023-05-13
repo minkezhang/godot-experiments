@@ -1,5 +1,58 @@
 extends Node2D
 
+var _TILE_CONFIGS = {
+	Vector2i(0, 0): TileConfig.new(Vector2i(0, 0)),
+	Vector2i(1, 0): TileConfig.new(Vector2i(1, 0)),
+	Vector2i(2, 0): TileConfig.new(
+		Vector2i(2, 0),
+		[
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_UP,
+			
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_CENTER,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST,
+		],
+	),
+	Vector2i(3, 0): TileConfig.new(
+		Vector2i(3, 0),
+		[
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_UP,
+			
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_CENTER,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST,
+		],
+	),
+	Vector2i(4, 0): TileConfig.new(Vector2i(4, 0)),
+}
+
+
 
 const _VOID_ATLAS_COORDS = Vector2i(0, 0)
 var _astar: AStar3D
