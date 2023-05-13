@@ -2,7 +2,6 @@ extends Node2D
 
 
 const _VOID_ATLAS_COORDS = Vector2i(0, 0)
-var _astargrid: AStarGrid2D
 var _astar: AStar3D
 
 var _NULL_POS = Vector2i(-1, -1)
@@ -39,7 +38,6 @@ func _process(_delta):
 				pack(Vector3i(target.x, target.y, 0), _dim)])
 			for n in $Highlight.get_used_cells(0):
 				$Highlight.erase_cell(0, n)
-			# for n in _astargrid.get_point_path(source, target):
 			for n in _astar.get_point_path(
 				pack(Vector3i(source.x, source.y, 0), _dim),
 				pack(Vector3i(target.x, target.y, 0), _dim)):
@@ -60,18 +58,6 @@ func unpack(id: int, dim: Vector3i) -> Vector3i:
 	return Vector3i(x, y, z)	
 	
 func _ready():
-	_astargrid = AStarGrid2D.new()
-	_astargrid.size = $Base.get_used_rect().size
-	_astargrid.cell_size = $Base.tile_set.tile_size
-	_astargrid.set_diagonal_mode(AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES)
-	_astargrid.update()
-	for n in $Base.get_used_cells(0):
-		var atlas = $Base.get_cell_atlas_coords(0, n)
-		if atlas == _VOID_ATLAS_COORDS:
-			_astargrid.set_point_solid(n)
-		if atlas != Vector2i(2, 0) and atlas != Vector2i(3, 0):
-			_astargrid.set_point_solid(n)
-	
 	_dim = Vector3i(
 		$Base.get_used_rect().size.x,
 		$Base.get_used_rect().size.y,
@@ -91,9 +77,49 @@ func _ready():
 		for n in $Base.get_used_cells(i):
 			if $Base.get_cell_atlas_coords(i, n) == _ATLAS_GRASS:
 				var source = Vector3i(n.x, n.y, i)
+				
+				var _corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER)
+				if $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_LEFT_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, _corner
+				) == _ATLAS_GRASS:
+					_astar.connect_points(pack(source, _dim), pack(Vector3i(_corner.x, _corner.y, i), _dim))
+				
+				_corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER)
+				if $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_LEFT_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, _corner
+				) == _ATLAS_GRASS:
+					_astar.connect_points(pack(source, _dim), pack(Vector3i(_corner.x, _corner.y, i), _dim))
+
+				_corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER)
+				if $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_RIGHT_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, _corner
+				) == _ATLAS_GRASS:
+					_astar.connect_points(pack(source, _dim), pack(Vector3i(_corner.x, _corner.y, i), _dim))
+
+				_corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER)
+				if $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_RIGHT_SIDE)
+				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
+					i, _corner
+				) == _ATLAS_GRASS:
+					_astar.connect_points(pack(source, _dim), pack(Vector3i(_corner.x, _corner.y, i), _dim))
+
 				for c in $Base.get_surrounding_cells(n):
 					if $Base.get_cell_atlas_coords(i, c) == _ATLAS_GRASS:
 						var target = Vector3i(c.x, c.y, i)
-						print("connecting src: %s (%s) to target: %s (%s)" % [source, pack(source, _dim), target, pack(target, _dim)])
 						_astar.connect_points(pack(source, _dim), pack(target, _dim))
 
