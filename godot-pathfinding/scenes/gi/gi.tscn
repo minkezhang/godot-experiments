@@ -7,10 +7,8 @@
 size = Vector2(64, 64)
 
 [node name="GI" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_q8644")
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4o23a")
