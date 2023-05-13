@@ -6,7 +6,7 @@ var _path: Array
 func _ready():
 	motion_mode = MOTION_MODE_FLOATING
 
-const SPEED = 30.0
+const SPEED = 60.0
 const JUMP_VELOCITY = -400.0
 
 func cancel_path():
@@ -14,9 +14,13 @@ func cancel_path():
 	]
 
 func set_path(p: Array):
-	_path = p
-	_path.reverse()
-	_path.pop_back()
+	var _p = Array(p)
+	_p.reverse()  # Current position is last in the stack.
+	_p.pop_back() # Get next cell destination.
+	if not _path.is_empty():
+		_p.append_array([_path[-1]]) # Ensure agent is in the correct cell position.
+	_path = _p
+	print("_path: ", _path)
 
 func _physics_process(delta):
 	if not _path.is_empty():
@@ -28,4 +32,4 @@ func _physics_process(delta):
 			set_velocity(Vector2i(0, 0))
 		else:
 			set_velocity(velocity)
-		move_and_slide()
+	move_and_slide()
