@@ -1,18 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://c7ds16c862bv"]
+[gd_scene load_steps=8 format=3 uid="uid://c7ds16c862bv"]
 
 [ext_resource type="Script" path="res://scenes/map/map.gd" id="1_8fno2"]
 [ext_resource type="Texture2D" uid="uid://bqw1m88ubglfd" path="res://assets/map/base.png" id="1_ku38q"]
 [ext_resource type="Texture2D" uid="uid://dxp8ako2voee6" path="res://assets/map/highlight.png" id="3_y6pg3"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_uua06"]
-vertices = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)])
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_5ocae"]
-vertices = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)])
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dedkb"]
 texture = ExtResource("1_ku38q")
@@ -24,15 +14,13 @@ texture_region_size = Vector2i(64, 64)
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, -32, 32, 32, 32, 32, -32)
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 2:0/0 = 0
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
-2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_uua06")
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
-3:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_5ocae")
 4:0/0 = 0
 4:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:0/0/physics_layer_0/angular_velocity = 0.0
@@ -42,7 +30,6 @@ texture_region_size = Vector2i(64, 64)
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
-navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_dedkb")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_784tg"]

@@ -23,13 +23,33 @@ func set_path(p: Array):
 	print("_path: ", _path)
 
 func _physics_process(delta):
-	if not _path.is_empty():
-		z_index = _path[-1].z
-		var dx = Vector2(_path[-1].x, _path[-1].y) - position
-		var velocity = dx.normalized() * SPEED
-		if dx.length() < (velocity * delta).length():
+	var valid = false
+	
+	var dx: Vector2
+	var v: Vector2i
+	var z: int
+	
+	var buf: Vector3i
+	for i in range(_path.size()):
+		buf = _path[-1]
+		dx = Vector2(buf.x, buf.y) - position
+		z = buf.z
+		v = dx.normalized() * SPEED
+		
+		if dx.length() == 0 or dx.length() < (v * delta).length():
 			_path.pop_back()
-			set_velocity(Vector2i(0, 0))
+			position.x = buf.x
+			position.y = buf.y
+			continue
 		else:
-			set_velocity(velocity)
+			valid = true
+			break
+	
+	print("DEBUG: valid = %s, v = %s, p = %s" % [valid, v, position])
+	if valid:
+		z_index = z
+		set_velocity(v)
+	else:
+		set_velocity(Vector2(0, 0))
+	
 	move_and_slide()

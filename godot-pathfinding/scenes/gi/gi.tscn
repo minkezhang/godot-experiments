@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scenes/gi/gi.gd" id="1_q8644"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4o23a"]
-size = Vector2(64, 64)
+size = Vector2(32, 32)
 
 [node name="GI" type="CharacterBody2D"]
 motion_mode = 1
