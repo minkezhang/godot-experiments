@@ -4,13 +4,13 @@ var _NULL_POS = Vector2i(-1, -1)
 
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_cancel"):
-		$Map/GI.cancel_path()
+		$GI.cancel_path()
 		for n in $Map/Highlight.get_used_cells(0):
 			$Map/Highlight.erase_cell(0, n)
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		var mpos = get_global_mouse_position()
-		var source = $Map/Base.local_to_map($Map/Base.to_local($Map/GI.position))
+		var source = $Map/Base.local_to_map($Map/Base.to_local($GI.position))
 		var target = $Map/Base.local_to_map($Map/Base.to_local(mpos))
 		$Map/Highlight.set_cell(0, target, 0, Vector2i(2, 0))
 	
@@ -33,4 +33,4 @@ func _process(_delta):
 					p.z,
 				)]
 			)
-		$Map/GI.set_path(_path)
+		$GI.set_path(_path)

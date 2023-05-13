@@ -9,7 +9,7 @@ script = ExtResource("1_3jeis")
 
 [node name="Map" parent="." instance=ExtResource("1_ed53r")]
 
-[node name="GI" parent="Map" instance=ExtResource("2_dpbte")]
+[node name="GI" parent="." instance=ExtResource("2_dpbte")]
 position = Vector2(963, 284)
 
 [editable path="Map"]
