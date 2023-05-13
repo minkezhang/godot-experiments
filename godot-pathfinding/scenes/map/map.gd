@@ -1,5 +1,6 @@
 extends Node2D
 
+var _DEFAULT_TILE_CONFIG = TileConfig.new()
 var _TILE_CONFIGS = {
 	Vector2i(0, 0): TileConfig.new(Vector2i(0, 0)),
 	Vector2i(1, 0): TileConfig.new(Vector2i(1, 0)),
@@ -52,12 +53,7 @@ var _TILE_CONFIGS = {
 	Vector2i(4, 0): TileConfig.new(Vector2i(4, 0)),
 }
 
-
-
-const _VOID_ATLAS_COORDS = Vector2i(0, 0)
 var _astar: AStar3D
-
-var _ATLAS_GRASS = Vector2i(2, 0)
 
 var _dim: Vector3i
 
@@ -92,51 +88,89 @@ func _ready():
 	
 	for i in range ($Base.get_layers_count()):
 		for n in $Base.get_used_cells(i):
-			if $Base.get_cell_atlas_coords(i, n) == _ATLAS_GRASS:
-				var source = Vector3i(n.x, n.y, i)
-				
-				var _corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER)
-				if $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_LEFT_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, _corner
-				) == _ATLAS_GRASS:
-					_astar.connect_points(pack(source), pack(Vector3i(_corner.x, _corner.y, i)))
-				
-				_corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER)
-				if $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_LEFT_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, _corner
-				) == _ATLAS_GRASS:
-					_astar.connect_points(pack(source), pack(Vector3i(_corner.x, _corner.y, i)))
+			var source = Vector3i(n.x, n.y, i)
+			for target in get_adjacent_tiles(source):
+				_astar.connect_points(pack(source), pack(target))
 
-				_corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER)
-				if $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_TOP_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_RIGHT_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, _corner
-				) == _ATLAS_GRASS:
-					_astar.connect_points(pack(source), pack(Vector3i(_corner.x, _corner.y, i)))
-
-				_corner = $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER)
-				if $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_BOTTOM_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, $Base.get_neighbor_cell(n, TileSet.CELL_NEIGHBOR_RIGHT_SIDE)
-				) == _ATLAS_GRASS and $Base.get_cell_atlas_coords(
-					i, _corner
-				) == _ATLAS_GRASS:
-					_astar.connect_points(pack(source), pack(Vector3i(_corner.x, _corner.y, i)))
-
-				for c in $Base.get_surrounding_cells(n):
-					if $Base.get_cell_atlas_coords(i, c) == _ATLAS_GRASS:
-						var target = Vector3i(c.x, c.y, i)
-						_astar.connect_points(pack(source), pack(target))
-
+func get_adjacent_tiles(source: Vector3i) -> Array:
+	var adjacent_tiles = {}
+	for e in TileConfig.NEIGHBOR_OFFSETS:
+		var offset = TileConfig.NEIGHBOR_OFFSETS[e]
+		var target = source + offset
+		if (
+			e != TileConfig.CellNeighbor.CELL_NEIGHBOR_CENTER
+		) and (
+			0 <= target.z
+		) and (
+			target.z < $Base.get_layers_count()
+		) and (
+			TileConfig.is_adjacent(
+				_TILE_CONFIGS.get(
+					$Base.get_cell_atlas_coords(
+						source.z,
+						Vector2i(source.x, source.y)),
+					_DEFAULT_TILE_CONFIG),
+				source,
+				_TILE_CONFIGS.get(
+					$Base.get_cell_atlas_coords(
+						target.z,
+						Vector2i(target.x, target.y)),
+					_DEFAULT_TILE_CONFIG),
+				target)):
+			adjacent_tiles[e] = target
+	
+	# Emulate AStarGrid2D.DiagonalMode.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
+	# behavior for cells within the same layer. Diagonal movement is allowed for
+	# the z-index, as this is how we fake traveling up ramps.
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_UP,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_UP]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST_UP)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_UP,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_UP]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_UP)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_UP,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_UP]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST_UP)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_UP,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_UP]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_UP)
+	
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST)
+	
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_DOWN,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_DOWN]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_WEST_DOWN)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_DOWN,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_DOWN]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_DOWN)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_DOWN,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_DOWN]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST_DOWN)
+	if not adjacent_tiles.has_all([
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_DOWN,
+		TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_DOWN]):
+			adjacent_tiles.erase(TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_DOWN)
+	
+	return adjacent_tiles.values()

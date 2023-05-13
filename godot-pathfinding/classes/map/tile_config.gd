@@ -71,16 +71,48 @@ const _ADJACENCY_DELTA = {
 	Vector3i( 1,  1, -1): CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_DOWN,
 }
 
+const NEIGHBOR_OFFSETS = {
+	CellNeighbor.CELL_NEIGHBOR_NORTH_WEST_UP:   Vector3i(-1, -1,  1),
+	CellNeighbor.CELL_NEIGHBOR_NORTH_UP:        Vector3i( 0, -1,  1),
+	CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_UP:   Vector3i( 1, -1,  1),
+	CellNeighbor.CELL_NEIGHBOR_WEST_UP:         Vector3i(-1,  0,  1),
+	CellNeighbor.CELL_NEIGHBOR_CENTER_UP:       Vector3i( 0,  0,  1),
+	CellNeighbor.CELL_NEIGHBOR_EAST_UP:         Vector3i( 1,  0,  1),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST_UP:   Vector3i(-1,  1,  1),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_UP:        Vector3i( 0,  1,  1),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_UP:   Vector3i( 1,  1,  1),
+	
+	CellNeighbor.CELL_NEIGHBOR_NORTH_WEST:      Vector3i(-1, -1,  0),
+	CellNeighbor.CELL_NEIGHBOR_NORTH:           Vector3i( 0, -1,  0),
+	CellNeighbor.CELL_NEIGHBOR_NORTH_EAST:      Vector3i( 1, -1,  0),
+	CellNeighbor.CELL_NEIGHBOR_WEST:            Vector3i(-1,  0,  0),
+	CellNeighbor.CELL_NEIGHBOR_CENTER:          Vector3i( 0,  0,  0),
+	CellNeighbor.CELL_NEIGHBOR_EAST:            Vector3i( 1,  0,  0),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST:      Vector3i(-1,  1,  0),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH:           Vector3i( 0,  1,  0),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST:      Vector3i( 1,  1,  0),
+	
+	CellNeighbor.CELL_NEIGHBOR_NORTH_WEST_DOWN: Vector3i(-1, -1, -1),
+	CellNeighbor.CELL_NEIGHBOR_NORTH_DOWN:      Vector3i( 0, -1, -1),
+	CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_DOWN: Vector3i( 1, -1, -1),
+	CellNeighbor.CELL_NEIGHBOR_WEST_DOWN:       Vector3i(-1,  0, -1),
+	CellNeighbor.CELL_NEIGHBOR_CENTER_DOWN:     Vector3i( 0,  0, -1),
+	CellNeighbor.CELL_NEIGHBOR_EAST_DOWN:       Vector3i( 1,  0, -1),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_WEST_DOWN: Vector3i(-1,  1, -1),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_DOWN:      Vector3i( 0,  1, -1),
+	CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_DOWN: Vector3i( 1,  1, -1),
+}
+
 static func is_adjacent(
 	source_tile_config: TileConfig, source: Vector3i,
 	target_tile_config: TileConfig, target: Vector3i) -> bool:
 	return source_tile_config._open_neighbors[
-		get_side(source, target)
+		_get_side(source, target)
 	] and target_tile_config._open_neighbors[
-		get_side(target, source)
+		_get_side(target, source)
 	]
 
-static func get_side(source: Vector3i, target: Vector3i) -> CellNeighbor:
+static func _get_side(source: Vector3i, target: Vector3i) -> CellNeighbor:
 	var delta = target - source
 	var side = _ADJACENCY_DELTA.get(delta, CellNeighbor.CELL_NEIGHBOR_INVALID)
 	assert(
