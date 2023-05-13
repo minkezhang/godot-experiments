@@ -1,7 +1,5 @@
 extends Node2D
 
-var _NULL_POS = Vector2i(-1, -1)
-
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		$GI.cancel_path()
@@ -17,8 +15,8 @@ func _process(_delta):
 		for n in $Map/Highlight.get_used_cells(0):
 			$Map/Highlight.erase_cell(0, n)
 		var path = $Map.astar().get_point_path(
-			$Map.pack(Vector3i(source.x, source.y, 0)),
-			$Map.pack(Vector3i(target.x, target.y, 0)))
+			$Map/Base.pack(Vector3i(source.x, source.y, 0)),
+			$Map/Base.pack(Vector3i(target.x, target.y, 0)))
 		for n in path:
 			$Map/Highlight.set_cell(0, Vector2i(n.x, n.y), 0, Vector2i(0, 0))
 		$Map/Highlight.set_cell(0, source, 0, Vector2i(1, 0))
