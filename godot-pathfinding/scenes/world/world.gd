@@ -8,7 +8,7 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		var mpos = get_global_mouse_position()
-		var source = $Map/Base.local_to_map($Map/Base.to_local($GI.position))
+		var source = $Map/Base.local_to_map($Map/Base.to_local($GI.get_source()))
 		var target = $Map/Base.local_to_map($Map/Base.to_local(mpos))
 		$Map/Highlight.set_cell(0, target, 0, Vector2i(2, 0))
 	

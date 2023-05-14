@@ -18,9 +18,19 @@ func set_path(p: Array):
 	_p.reverse()  # Current position is last in the stack.
 	_p.pop_back() # Get next cell destination.
 	if not _path.is_empty():
+		print("DEBUG(gi): path not empty, adding %s to head" % [_path[-1]])
 		_p.append_array([_path[-1]]) # Ensure agent is in the correct cell position.
 	_path = _p
-	print("_path: ", _path)
+	print("DEBUG(gi): _path = ", _path)
+
+func get_source() -> Vector2:
+	if _path.is_empty():
+		return position
+	else:
+		return Vector2(
+			_path[-1].x,
+			_path[-1].y,
+		)
 
 func _physics_process(delta):
 	var valid = false
@@ -45,7 +55,6 @@ func _physics_process(delta):
 			valid = true
 			break
 	
-	print("DEBUG: valid = %s, v = %s, p = %s" % [valid, v, position])
 	if valid:
 		z_index = z
 		set_velocity(v)
