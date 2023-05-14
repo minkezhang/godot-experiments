@@ -27,11 +27,15 @@ func get_waypoint() -> Vector3i:
 func stop():
 	_waypoints = [ get_waypoint() ]
 
+## Set the waypoints for a unit to follow.
+##
+## TODO(minkezhang): Interpolate intermediate waypoints to allow for jump
+## point navigation. 
 func set_waypoint(waypoints: Array[Vector3i]):
 	_waypoints = waypoints
 	_waypoints.reverse()
 
-# Slide to the next waypoint tile.
+## Slide to the next waypoint tile.
 func _physics_process(delta):
 	for i in range(_waypoints.size()):
 		var wp = get_waypoint()
