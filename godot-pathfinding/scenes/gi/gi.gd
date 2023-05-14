@@ -41,6 +41,10 @@ func _physics_process(delta):
 		var v = dx.normalized() * SPEED if dx.length() > 0 else Vector2(0, 0)
 		
 		set_velocity(v)
+		# TODO(minkezhang): See https://www.reddit.com/r/godot/comments/10n14l8/
+		# and https://godotengine.org/qa/88517/ to trigger the z_index change
+		# with an auto-generated collision object.
+		z_index = wp.z
 		
 		# Prevent jitter when the unit arrives at a tile.
 		if (

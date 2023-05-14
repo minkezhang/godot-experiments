@@ -52,6 +52,23 @@ var _TILE_CONFIGS = {
 		],
 	),
 	Vector2i(4, 0): TileConfig.new(Vector2i(4, 0)),
+	Vector2i(5, 0): TileConfig.new(
+		Vector2i(5, 0),
+		[
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST_UP,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST_UP,
+			
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_NORTH_EAST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_CENTER,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_EAST,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH,
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_SOUTH_EAST,
+			
+			TileConfig.CellNeighbor.CELL_NEIGHBOR_WEST_DOWN,
+		],
+	)
 }
 
 func pack(cell: Vector3i) -> int:
