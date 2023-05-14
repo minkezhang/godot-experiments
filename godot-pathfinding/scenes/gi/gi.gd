@@ -1,64 +1,50 @@
 extends CharacterBody2D
 
-# Cells
-var _path: Array
+const SPEED = 120.0
+
+# Stack of TileMap map coordinates. Stack is in reverse order -- the next
+# waypoint tile is at the end of the data struct.
+var _waypoints: Array[Vector3i]
 
 func _ready():
 	motion_mode = MOTION_MODE_FLOATING
 
-const SPEED = 60.0
-const JUMP_VELOCITY = -400.0
+## Get the next source position of the unit.
+##
+## Pathfinding cannot interrupt a unit's tile-to-tile movement, and therefore
+## we will need to report the next "visible" position of the unit.
+func get_waypoint() -> Vector3i:
+	return Vector3i(
+		position.x,
+		position.y,
+		z_index,
+	) if _waypoints.is_empty() else _waypoints[-1]
 
-func cancel_path():
-	_path = [
-	]
+func stop():
+	_waypoints = [ get_waypoint() ]
 
-func set_path(p: Array):
-	var _p = Array(p)
-	_p.reverse()  # Current position is last in the stack.
-	_p.pop_back() # Get next cell destination.
-	if not _path.is_empty():
-		print("DEBUG(gi): path not empty, adding %s to head" % [_path[-1]])
-		_p.append_array([_path[-1]]) # Ensure agent is in the correct cell position.
-	_path = _p
-	print("DEBUG(gi): _path = ", _path)
-
-func get_source() -> Vector2:
-	if _path.is_empty():
-		return position
-	else:
-		return Vector2(
-			_path[-1].x,
-			_path[-1].y,
-		)
+func set_waypoint(waypoints: Array[Vector3i]):
+	_waypoints = waypoints
+	_waypoints.reverse()
 
 func _physics_process(delta):
-	var valid = false
-	
-	var dx: Vector2
-	var v: Vector2i
-	var z: int
-	
-	var buf: Vector3i
-	for i in range(_path.size()):
-		buf = _path[-1]
-		dx = Vector2(buf.x, buf.y) - position
-		z = buf.z
-		v = dx.normalized() * SPEED
+	for i in range(_waypoints.size()):
+		var wp = get_waypoint()
+		var dx = Vector2(wp.x, wp.y) - position
+		var v = dx.normalized() * SPEED
 		
-		if dx.length() == 0 or dx.length() < (v * delta).length():
-			_path.pop_back()
-			position.x = buf.x
-			position.y = buf.y
-			continue
-		else:
-			valid = true
-			break
-	
-	if valid:
-		z_index = z
 		set_velocity(v)
-	else:
-		set_velocity(Vector2(0, 0))
+		
+		if (
+			dx.length() == 0
+		) or (
+			dx.length() < (v * delta).length()
+		):
+			_waypoints.pop_back()
+			
+			position.x = wp.x
+			position.y = wp.y
+		else:
+			break
 	
 	move_and_slide()

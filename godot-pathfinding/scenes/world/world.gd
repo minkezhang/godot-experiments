@@ -8,7 +8,12 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		var mpos = get_global_mouse_position()
-		var source = $Map/Base.local_to_map($Map/Base.to_local($GI.get_source()))
+		var source = $Map/Base.local_to_map($Map/Base.to_local(
+			Vector2(
+				$GI.get_waypoint().x,
+				$GI.get_waypoint().y,
+			),
+		))
 		var target = $Map/Base.local_to_map($Map/Base.to_local(mpos))
 		$Map/Highlight.set_cell(0, target, 0, Vector2i(2, 0))
 	
@@ -22,7 +27,7 @@ func _process(_delta):
 		$Map/Highlight.set_cell(0, source, 0, Vector2i(1, 0))
 		$Map/Highlight.set_cell(0, target, 0, Vector2i(2, 0))
 		
-		var _path = []
+		var _path: Array[Vector3i] = []
 		for p in path:
 			_path.append_array(
 				[Vector3i(
@@ -31,4 +36,4 @@ func _process(_delta):
 					p.z,
 				)]
 			)
-		$GI.set_path(_path)
+		$GI.set_waypoint(_path)
