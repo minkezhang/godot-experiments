@@ -16,7 +16,7 @@ func _base_to_render_cell(layer: int, ortho: Vector2i) -> Vector2i:
 func _ready():
 	$Base.visible = false
 	
-	for i in range($Render.get_layers_count()):
+	for i in range($Render.get_layers_count() - 1, -1, -1):
 		$Render.remove_layer(i)
 	
 	for i in range($Base.get_layers_count()):

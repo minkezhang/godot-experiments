@@ -1,9 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://ddhfwhej02eft"]
+[gd_scene load_steps=3 format=3 uid="uid://ddhfwhej02eft"]
 
 [ext_resource type="PackedScene" uid="uid://qc58t1kx83vq" path="res://scenes/map/map.tscn" id="1_b7oqi"]
+[ext_resource type="PackedScene" uid="uid://n7algwme65di" path="res://scenes/gi/gi.tscn" id="2_ivrlp"]
 
 [node name="World" type="Node2D"]
 
 [node name="Map" parent="." instance=ExtResource("1_b7oqi")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="GI3" parent="." instance=ExtResource("2_ivrlp")]
+position = Vector2(-160, 167)
+
+[node name="GI2" parent="." instance=ExtResource("2_ivrlp")]
+position = Vector2(30, 171)
+
+[node name="GI" parent="." instance=ExtResource("2_ivrlp")]
+position = Vector2(32, 32)

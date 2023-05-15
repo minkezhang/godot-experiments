@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://n7algwme65di"]
+
+[ext_resource type="Texture2D" uid="uid://87j0ofwatip0" path="res://assets/gi/gi.png" id="1_0pfgi"]
+[ext_resource type="Script" path="res://scenes/gi/gi.gd" id="1_apdm5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kwjq1"]
+size = Vector2(32, 32)
+
+[node name="GI" type="CharacterBody2D"]
+y_sort_enabled = true
+motion_mode = 1
+script = ExtResource("1_apdm5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_0pfgi")
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_kwjq1")
