@@ -31,7 +31,7 @@ func _init(tileset: TileSet, template: TileSetAtlasSource, origin: Vector3i, siz
 							template.get_tile_size_in_atlas(atlas))
 						source.get_tile_data(atlas, 0).texture_origin = template.get_tile_data(atlas, 0).texture_origin
 						source.get_tile_data(atlas, 0).y_sort_origin = template.get_tile_data(atlas, 0).y_sort_origin
-						source.get_tile_data(atlas, 0).z_index = k
+						source.get_tile_data(atlas, 0).z_index = _min + k
 
 func get_source(cell: Vector3i) -> int:
 	return _source_lookup.get(cell.x + cell.y + cell.z, -1)

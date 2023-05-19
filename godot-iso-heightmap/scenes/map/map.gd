@@ -42,5 +42,5 @@ func _ready():
 			$Render.set_cell(
 				i,
 				_base_to_render_cell(i, c),
-				dts.get_source(Vector3i(c.x, c.y, i)),  # $Base.get_cell_source_id(i, c),
+				dts.get_source(Vector3i(c.x, c.y, i)),
 				atlas)

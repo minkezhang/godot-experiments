@@ -9,14 +9,22 @@
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
+[node name="GI6" parent="." instance=ExtResource("2_ivrlp")]
+position = Vector2(-10, -12)
+layer = 1
+
 [node name="GI4" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(-30, 40)
+position = Vector2(-9, 49)
+
+[node name="GI5" parent="." instance=ExtResource("2_ivrlp")]
+position = Vector2(-187, 5)
+layer = 1
 
 [node name="GI3" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(-160, 167)
+position = Vector2(-184, 137)
 
 [node name="GI2" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(30, 171)
+position = Vector2(53, 181)
 
 [node name="GI" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(32, 32)
+position = Vector2(56, 52)
