@@ -10,7 +10,7 @@
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="GI4" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(-144, 35)
+position = Vector2(-30, 40)
 
 [node name="GI3" parent="." instance=ExtResource("2_ivrlp")]
 position = Vector2(-160, 167)
