@@ -6,6 +6,9 @@ var m = Transform2D(
 
 @export var layer: int = 0
 
+signal up_ramp
+signal down_ramp
+
 # TODO(minkezhang): Add tile highlight + z-index inspector.
 
 func _physics_process(_delta):
@@ -14,4 +17,8 @@ func _physics_process(_delta):
 	$Sprite2D.set_global_position(p)
 	var tile = Vector2i(floori(position.x / 64), floori(position.y / 64))
 	z_index = tile.x + tile.y + layer + 1
+	
+	
+
+	
 	print("raw: " , position, ", tile: ", tile, ", z_index: ", z_index)

@@ -15,16 +15,16 @@ func _base_to_render_cell(layer: int, ortho: Vector2i) -> Vector2i:
 ## Dynamically generates the Render TileMap.
 func _ready():
 	var dts = DynamicTileSetSource.new(
-		$Render.tile_set,
-		$Render.tile_set.get_source(0),
-		Vector3i(
-			$Base.get_used_rect().position.x,
-			$Base.get_used_rect().position.y,
-			0),
-		Vector3i(
-			$Base.get_used_rect().size.x,
-			$Base.get_used_rect().size.y,
-			$Base.get_layers_count()))
+	$Render.tile_set,
+	$Render.tile_set.get_source(0),
+	Vector3i(
+		$Base.get_used_rect().position.x,
+		$Base.get_used_rect().position.y,
+		0),
+	Vector3i(
+		$Base.get_used_rect().size.x,
+		$Base.get_used_rect().size.y,
+		$Base.get_layers_count()))
 	
 	$Base.visible = false
 	
@@ -44,3 +44,4 @@ func _ready():
 				_base_to_render_cell(i, c),
 				dts.get_source(Vector3i(c.x, c.y, i)),
 				atlas)
+

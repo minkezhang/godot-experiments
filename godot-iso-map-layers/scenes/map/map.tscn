@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://ukd07y8h23ba"]
+
+[ext_resource type="TileSet" uid="uid://jfeqx4a37oy1" path="res://assets/map/map.tres" id="1_nyr18"]
+[ext_resource type="Shader" path="res://scenes/map/gi.gdshader" id="2_7psg2"]
+[ext_resource type="Texture2D" uid="uid://cfrpkf7phhr7c" path="res://assets/gi/gi.png" id="2_vetvh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eqla4"]
+shader = ExtResource("2_7psg2")
+shader_parameter/speed = 0.0
+
+[node name="Map" type="Node2D"]
+
+[node name="Layer 0" type="TileMap" parent="."]
+y_sort_enabled = true
+tile_set = ExtResource("1_nyr18")
+format = 2
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(65535, 65536, 0, -1, 65536, 0, -65537, 65536, 0, -131073, 65536, 0, -196608, 131072, 0, -196607, 262144, 0, -196606, 131072, 0, 131074, 131072, 0, 131073, 131072, 0, 131072, 65536, 0, 196607, 65536, 0, 131071, 65536, 0, -131072, 131072, 0, -65536, 131072, 0, 0, 65536, 0, 1, 131072, 0, 65537, 131072, 0, -65535, 262144, 0, -131071, 262144, 0, -131070, 262144, 0, -65534, 262144, 0, 2, 131072, 0, 65538, 131072, 0, 65536, 65536, 0, -196609, 65536, 0, -262144, 131072, 0, -262143, 131072, 0, -262142, 131072, 0)
+
+[node name="GI" type="CharacterBody2D" parent="Layer 0"]
+y_sort_enabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Layer 0/GI"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Layer 0/GI"]
+z_index = 2
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_eqla4")
+position = Vector2(51, -4)
+texture = ExtResource("2_vetvh")
+
+[node name="Layer 1" type="TileMap" parent="."]
+z_index = 1
+y_sort_enabled = true
+tile_set = ExtResource("1_nyr18")
+format = 2
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(-262146, 196608, 0, -196610, 196608, 0, -131074, 196608, 0, -65538, 196608, 0, -2, 196608, 0, 65534, 196608, 0, 65535, 65536, 1, -1, 65536, 1, 131071, 131072, 1, 131070, 0, 1, -327679, 196608, 0, 65537, 0, 1)
+layer_1/name = ""
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = true
+layer_1/y_sort_origin = 0
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array(1, 327680, 0, -65535, 327680, 0, -131071, 327680, 0, -196607, 327680, 0, -262143, 327680, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]

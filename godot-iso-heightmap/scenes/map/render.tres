@@ -1,0 +1,54 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://ckvjvg3mlvt1w"]
+
+[ext_resource type="Texture2D" uid="uid://bprdjdts5wsah" path="res://assets/map/render.png" id="1_g1wn8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a6ylv"]
+texture = ExtResource("1_g1wn8")
+texture_region_size = Vector2i(64, 64)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -16)
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, -16)
+3:0/0 = 0
+3:0/0/texture_origin = Vector2i(0, -16)
+4:0/0 = 0
+4:0/0/texture_origin = Vector2i(0, -16)
+5:0/0 = 0
+5:0/0/texture_origin = Vector2i(0, -16)
+1:1/0 = 0
+1:1/0/texture_origin = Vector2i(0, -16)
+2:1/0 = 0
+2:1/0/texture_origin = Vector2i(0, -16)
+3:1/0 = 0
+3:1/0/texture_origin = Vector2i(0, -16)
+4:1/0 = 0
+4:1/0/texture_origin = Vector2i(0, -16)
+5:1/0 = 0
+5:1/0/texture_origin = Vector2i(0, -16)
+0:2/0 = 0
+0:2/0/texture_origin = Vector2i(0, -16)
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+3:2/0/texture_origin = Vector2i(0, -16)
+4:2/0 = 0
+4:2/0/texture_origin = Vector2i(0, -16)
+5:2/0 = 0
+5:2/0/texture_origin = Vector2i(0, -16)
+6:2/0 = 0
+6:2/0/texture_origin = Vector2i(0, -16)
+0:0/0 = 0
+0:1/0 = 0
+0:1/0/texture_origin = Vector2i(0, -16)
+6:0/0 = 0
+7:0/0 = 0
+7:1/0 = 0
+6:1/0 = 0
+6:1/0/texture_origin = Vector2i(0, -16)
+7:2/0 = 0
+
+[resource]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_a6ylv")
