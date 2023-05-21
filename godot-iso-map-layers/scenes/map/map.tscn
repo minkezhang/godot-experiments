@@ -28,7 +28,7 @@ layer_2/z_index = 2
 layer_2/tile_data = PackedInt32Array(-131074, 65536, 1, -65538, 65536, 1, -2, 65536, 1, -131075, 196608, 0, -65539, 196608, 0, 131070, 65536, 1)
 
 [node name="GI" parent="Terrain" instance=ExtResource("2_yqxjf")]
-position = Vector2(-103, -15)
+position = Vector2(-108, -6)
 
 [node name="Bridge" type="TileMap" parent="."]
 z_index = 1

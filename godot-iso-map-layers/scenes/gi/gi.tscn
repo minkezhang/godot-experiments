@@ -9,6 +9,10 @@ motion_mode = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+editor_description = "1. offset
+2. z-axis = ground + 1
+3. need bridge layer transition tile with offset == bridge + 1
+4. custom data layer to record z-layer"
 z_index = 3
 y_sort_enabled = true
 texture = ExtResource("1_lblft")
