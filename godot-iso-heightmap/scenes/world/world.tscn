@@ -17,13 +17,16 @@ position = Vector2(-17, -39)
 layer = 1
 
 [node name="GI4" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(112, 112)
+position = Vector2(-187, 70)
+
+[node name="GI8" parent="." instance=ExtResource("2_ivrlp")]
+position = Vector2(31, 30)
 
 [node name="GI5" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(-159, 33)
+position = Vector2(-152, 35)
 layer = 1
 
 [node name="GI3" parent="." instance=ExtResource("2_ivrlp")]
-position = Vector2(-154, 129)
+position = Vector2(-108, 139)
 
 [editable path="Map"]

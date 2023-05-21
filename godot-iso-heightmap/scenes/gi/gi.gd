@@ -16,9 +16,7 @@ func _physics_process(_delta):
 	p.y -= 32 * layer  # TODO(minkezhang): Add heightmap offset.
 	$Sprite2D.set_global_position(p)
 	var tile = Vector2i(floori(position.x / 64), floori(position.y / 64))
-	z_index = tile.x + tile.y + layer + 1
+	z_index = tile.x + tile.y + 2 * layer + 1
 	
-	
-
 	
 	print("raw: " , position, ", tile: ", tile, ", z_index: ", z_index)

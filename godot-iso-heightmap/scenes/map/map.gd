@@ -39,9 +39,12 @@ func _ready():
 		# Copy corresponding textures to the rendered TileMap.
 		for c in $Base.get_used_cells(i):
 			var atlas = $Base.get_cell_atlas_coords(i, c)
+			var _z = i
+			if atlas == Vector2i(5, 0):
+				_z += 1
 			$Render.set_cell(
 				i,
 				_base_to_render_cell(i, c),
-				dts.get_source(Vector3i(c.x, c.y, i)),
+				dts.get_source(Vector3i(c.x, c.y, _z)),
 				atlas)
 
