@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqkcnp40hp7ui"]
+
+[ext_resource type="TileSet" uid="uid://bookc5b6mqudk" path="res://assets/map/render_remake.tres" id="1_on8ag"]
+[ext_resource type="Texture2D" uid="uid://cfrpkf7phhr7c" path="res://assets/gi/gi.png" id="2_m546v"]
+
+[node name="Map" type="Node2D"]
+
+[node name="Terrain" type="Node2D" parent="."]
+
+[node name="Whole" type="TileMap" parent="Terrain"]
+y_sort_enabled = true
+tile_set = ExtResource("1_on8ag")
+format = 2
+layer_0/name = "Ground"
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(-65540, 0, 0, -65541, 196608, 1, -5, 262144, 1, -6, 327680, 1, -7, 393216, 1, -65543, 458752, 1, -131078, 65536, 1, -131079, 0, 1, -131077, 131072, 1, -327679, 0, 0, 327677, 458752, 1, 196607, 0, 0, 262143, 0, 0, 458749, 393216, 1, 393213, 458752, 1, 458750, 327680, 1, 458751, 327680, 1, 393216, 327680, 1, 262141, 458752, 1, 196605, 458752, 1, 65536, 65536, 1, 131071, 65536, 1, 131070, 65536, 1, 131069, 0, 1, 65537, 65536, 1, 65538, 65536, 1, 65539, 65536, 1, 131072, 0, 0, 131073, 0, 0, 196608, 0, 0, 196609, 0, 0, 393217, 327680, 1, 393218, 327680, 1, 393219, 327680, 1, 393221, 262144, 1, 393220, 327680, 1, 65541, 131072, 1, 65540, 65536, 1, 131077, 196608, 1, 196613, 196608, 1, 262149, 196608, 1, 327685, 196608, 1, 196622, 393216, 3, 131086, 262144, 3, -65525, 524288, 1, -327670, 0, 0, -262134, 0, 0, -196598, 0, 0, -131062, 0, 0, -65526, 0, 0, 10, 0, 0, 11, 0, 0, 65547, 0, 0, -393206, 0, 0, -393205, 0, 0, -458741, 0, 0, -262130, 262144, 3, -327666, 262144, 3, -65523, 196608, 1, -131059, 196608, 1, -196595, 196608, 1, -131056, 196608, 1, -65520, 196608, 1, 16, 196608, 1, -196591, 0, 0, -131055, 0, 0, -65519, 0, 0, 17, 0, 0, 65553, 0, 0, 131089, 0, 0, -262127, 0, 0, -327663, 0, 0, 196625, 0, 0, 65552, 262144, 1, 131088, 0, 0, 196624, 0, 0, 262160, 0, 0, -196592, 131072, 1, -262128, 0, 0, -327664, 0, 0, 65551, 327680, 1, -196593, 65536, 1, -327669, 720896, 1)
+layer_1/name = "Ground_Half"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = true
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Cliffs"
+layer_2/enabled = true
+layer_2/modulate = Color(1, 1, 1, 1)
+layer_2/y_sort_enabled = true
+layer_2/y_sort_origin = 0
+layer_2/z_index = 0
+layer_2/tile_data = PackedInt32Array(-262141, 65536, 3, -262140, 196608, 3, -196604, 262144, 3, -131068, 393216, 3, -131069, 458752, 3, -131070, 589824, 3, -196606, 655360, 3, -327679, 0, 3)
+
+[node name="Gi" type="Sprite2D" parent="Terrain/Whole"]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(295, 64)
+texture = ExtResource("2_m546v")
+offset = Vector2(0, -32)
+
+[node name="Half" type="TileMap" parent="Terrain"]
+y_sort_enabled = true
+position = Vector2(0, 16)
+tile_set = ExtResource("1_on8ag")
+format = 2
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(262141, 0, 0, 196605, 0, 0, 196606, 458752, 1, 262142, 458752, 1, 327679, 327680, 1, 327678, 393216, 1, 327677, 0, 0, 131071, 65536, 1, 131069, 0, 0, 131070, 0, 1, 65536, 65536, 1, 65537, 65536, 1, 262144, 327680, 1, 262145, 327680, 1, 65538, 131072, 1, 65539, 0, 0, 131075, 0, 0, 196611, 0, 0, 262147, 0, 0, 131074, 196608, 1, 196610, 196608, 1, 262146, 262144, 1, -65524, 65536, 1, -131061, 196608, 1, -196597, 196608, 1, -262133, 196608, 1, -327668, 327680, 1, -65522, 196608, 1, -131058, 196608, 1, -196594, 196608, 1)
+
+[node name="Bridge" type="TileMap" parent="."]
+format = 2
+layer_0/name = "Bridge"
+layer_0/z_index = 2
