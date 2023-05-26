@@ -8,8 +8,10 @@
 script = ExtResource("1_7n4ye")
 
 [node name="Terrain" type="Node2D" parent="."]
+visible = false
 
 [node name="Terrain" type="TileMap" parent="Terrain"]
+visible = false
 y_sort_enabled = true
 tile_set = ExtResource("1_on8ag")
 format = 2
@@ -32,6 +34,7 @@ layer_2/z_index = 0
 layer_2/tile_data = PackedInt32Array(-262141, 65536, 3, -262140, 196608, 3, -196604, 262144, 3, -131068, 393216, 3, -131069, 458752, 3, -131070, 589824, 3, -196606, 655360, 3, -327679, 0, 3)
 
 [node name="Gi" type="Sprite2D" parent="Terrain/Terrain"]
+visible = false
 z_index = 1
 y_sort_enabled = true
 position = Vector2(175, 342)
@@ -39,6 +42,9 @@ texture = ExtResource("2_m546v")
 offset = Vector2(0, -32)
 
 [node name="Bridge" type="TileMap" parent="Terrain"]
+visible = false
 format = 2
 layer_0/name = "Bridge"
 layer_0/z_index = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
