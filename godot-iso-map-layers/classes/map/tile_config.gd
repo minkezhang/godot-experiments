@@ -1,9 +1,9 @@
-extends Node
+extends Resource
 
 class_name TileConfig
 
-var RENDER_TILESET: TileSet = load("res://classes/map/render.tres")
-var SCHEMATIC_TILESET: TileSet = load("res://classes/map/schematic.tres")
+var RENDER_TILESET: TileSet = load("res://assets/map/render.tres")
+var SCHEMATIC_TILESET: TileSet = load("res://assets/map/schematic.tres")
 
 enum T {
 	TILE_NONE,
@@ -24,7 +24,6 @@ enum T {
 }
 
 const _INVALID_ATLAS_COORD: Vector3i = Vector3i(-1, -1, -1)
-
 var _configs: Array[TileConfigInstance] = [
 	TileConfigInstance.new(
 		T.TILE_NONE,
@@ -115,6 +114,15 @@ class TileConfigInstance:
 		_tile = tile
 		_render_atlas_coord = render
 		_schematic_atlas_coord = schematic
+	
+	func get_tile() -> T:
+		return _tile
+	
+	func get_render_atlas_coord() -> Vector3i:
+		return _render_atlas_coord
+	
+	func get_schematic_atlas_coord() -> Vector3i:
+		return _schematic_atlas_coord
 
 var _lookup_tile: Dictionary
 var _lookup_render: Dictionary
