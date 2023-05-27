@@ -2,9 +2,9 @@ extends Resource
 
 # Create the TileMap scene which renders the isometric terrain, cliffs, and
 # bridges.
-class_name Map
+class_name RTSMap
 
-var _map: Node2D = Node2D.new()
+var _rts_map: Node2D = Node2D.new()
 
 const _CELL_WIDTH: int = 64
 const _CELL_HEIGHT: int = 32
@@ -35,6 +35,8 @@ func generate_render_atlas_sources(layer: int) -> Array[TileSetAtlasSource]:
 		return sources
 
 func _init(tiles: Array[Tile], n_layers: int = 1):
+	_rts_map.set_name("RTSMap")
+	
 	# Initialize the isometric tilemap properties.
 	var terrain: TileMap = TileMap.new()
 	terrain.set_name("Terrain")
@@ -48,19 +50,19 @@ func _init(tiles: Array[Tile], n_layers: int = 1):
 		for s in generate_render_atlas_sources(i - 1):
 			terrain.tile_set.add_source(s)
 	
-	_map.add_child(terrain)
+	_rts_map.add_child(terrain)
 	
 	for t in tiles:
 		add_tile(t._position, t._t)
 
 func add_tile(p: Vector3i, t: TileConfig.T):
 	var atlas = _tile_config.get_by_tile(t).get_render_atlas_coord()
-	_map.get_node("Terrain").set_cell(
+	_rts_map.get_node("Terrain").set_cell(
 		0,                                                               # layer
 		Vector2i(p.x, p.y),                                              # coords
 		p.z * _tile_config.RENDER_TILESET.get_source_count() + atlas.z,  # source
 		Vector2i(atlas.x, atlas.y),                                      # atlas
 	)
 
-func get_map() -> Node2D:
-	return _map
+func get_rts_map() -> Node2D:
+	return _rts_map
