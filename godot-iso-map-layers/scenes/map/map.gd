@@ -10,7 +10,6 @@ var _layout: Array[Map.Tile] = [
 	Map.Tile.new(Map.T.TILE_RAMP_GRASS_NORTH, Vector3i(2, 1, 0)),
 	Map.Tile.new(Map.T.TILE_RAMP_GRASS_NORTHWEST, Vector3i(3, 1, 0)),
 ]
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var m = Map.new(_layout)

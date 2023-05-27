@@ -25,7 +25,7 @@ enum T {
 }
 
 class Metadata:
-	var _template: TileSet = load("res://classes/map/map.tres")
+	var _template: TileSet = load("res://assets/map/render.tres")
 	var _atlas_lookup: Dictionary = {
 		T.TILE_NONE:                      Vector3i(-1, -1, -1),
 		T.TILE_TERRAIN_GRASS:             Vector3i(0, 0, 0),
@@ -72,10 +72,13 @@ class Metadata:
 class Tile:
 	var _t: T = T.TILE_NONE
 	var _position: Vector3i = Vector3i(0, 0, 0)
+	# Sprites which overlap this tile need to set their z-index to this value.
+	var _z_index: int = 0
 
-	func _init(t: T, p: Vector3i):
+	func _init(t: T, p: Vector3i, z: int = -1):
 		_t = t
 		_position = p
+		_z_index = z if z >= 0 else p.z
 
 var _tiles: Array[Tile] = []
 var _metadata: Metadata = Metadata.new()
