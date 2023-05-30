@@ -57,6 +57,9 @@ func _init(tiles: Array[Tile], n_layers: int = 1):
 
 func add_tile(p: Vector3i, t: TileConfig.T):
 	var atlas = _tile_config.get_by_tile(t).get_render_atlas_coord()
+	print(_rts_map.get_node("Terrain").tile_set.get_source(
+		p.z * _tile_config.RENDER_TILESET.get_source_count() + atlas.z
+	).get_tile_data(Vector2i(atlas.x, atlas.y), 0).z_index)
 	_rts_map.get_node("Terrain").set_cell(
 		0,                                                               # layer
 		Vector2i(p.x, p.y),                                              # coords

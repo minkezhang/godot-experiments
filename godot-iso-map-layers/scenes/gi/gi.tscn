@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://cq5k2083y3tol"]
+[gd_scene load_steps=3 format=3 uid="uid://cq5k2083y3tol"]
 
+[ext_resource type="Script" path="res://scenes/gi/gi.gd" id="1_64dlx"]
 [ext_resource type="Texture2D" uid="uid://cfrpkf7phhr7c" path="res://assets/gi/gi.png" id="1_lblft"]
 
 [node name="GI" type="CharacterBody2D"]
 y_sort_enabled = true
 motion_mode = 1
+script = ExtResource("1_64dlx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
@@ -13,7 +15,6 @@ editor_description = "1. offset
 2. z-axis = ground + 1
 3. need bridge layer transition tile with offset == bridge + 1
 4. custom data layer to record z-layer"
-z_index = 3
 y_sort_enabled = true
 texture = ExtResource("1_lblft")
 offset = Vector2(0, 8)

@@ -23,20 +23,13 @@ func _ready():
 
 func get_tiles() -> Array[Tile]:
 	var tiles: Array[Tile] = []
-	for i in $Terrain.get_layers_count():
-		for t in $Terrain.get_used_cells(i):
-			var atlas = $Terrain.get_cell_atlas_coords(i, t)
-			var config = _tile_config.get_by_schematic(
-				Vector3i(atlas.x, atlas.y, $Terrain.get_cell_source_id(i, t)))
-			tiles.append(Tile.new(
-				config.get_tile(), Vector3i(t.x, t.y, i),
-			))
-	for i in $Cliff.get_layers_count():
-		for t in $Cliff.get_used_cells(i):
-			var atlas = $Cliff.get_cell_atlas_coords(i, t)
-			var config = _tile_config.get_by_schematic(
-				Vector3i(atlas.x, atlas.y, $Cliff.get_cell_source_id(i, t)))
-			tiles.append(Tile.new(
-				config.get_tile(), Vector3i(t.x, t.y, i),
-			))
+	for tm in [$Terrain, $Cliff]:
+		for i in tm.get_layers_count():
+			for t in tm.get_used_cells(i):
+				var atlas = tm.get_cell_atlas_coords(i, t)
+				var config = _tile_config.get_by_schematic(
+					Vector3i(atlas.x, atlas.y, tm.get_cell_source_id(i, t)))
+				tiles.append(Tile.new(
+					config.get_tile(), Vector3i(t.x, t.y, i),
+				))
 	return tiles
