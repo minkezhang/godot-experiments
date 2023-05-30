@@ -125,28 +125,28 @@ var _configs: Array[TileConfigInstance] = [
 	),
 	TileConfigInstance.new(
 		T.TILE_CLIFF_WEST,
-		Vector3i(3, 0, 2),
-		Vector3i(3, 0, 2),
+		Vector3i(4, 0, 2),
+		Vector3i(5, 0, 2),
 	),
 	TileConfigInstance.new(
 		T.TILE_CLIFF_NORTHWEST,
-		Vector3i(0, 4, 2),
-		Vector3i(0, 1, 2),
+		Vector3i(0, 5, 2),
+		Vector3i(0, 2, 2),
 	),
 	TileConfigInstance.new(
 		T.TILE_CLIFF_NORTH,
-		Vector3i(1, 4, 2),
-		Vector3i(1, 1, 2),
+		Vector3i(1, 5, 2),
+		Vector3i(1, 2, 2),
 	),
 	TileConfigInstance.new(
 		T.TILE_CLIFF_NORTHEAST,
-		Vector3i(3, 4, 2),
-		Vector3i(2, 1, 2),
+		Vector3i(3, 5, 2),
+		Vector3i(2, 2, 2),
 	),
 	TileConfigInstance.new(
 		T.TILE_CLIFF_EAST,
-		Vector3i(4, 4, 2),
-		Vector3i(3, 1, 2),
+		Vector3i(5, 5, 2),
+		Vector3i(4, 2, 2),
 	),
 ]
 
