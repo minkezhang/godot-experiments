@@ -21,14 +21,22 @@ enum T {
 	TILE_RAMP_GRASS_SOUTHEAST_DOWN,
 	TILE_RAMP_GRASS_SOUTHWEST_DOWN,
 	TILE_RAMP_GRASS_NORTHWEST_DOWN,
+	TILE_CLIFF_NORTH,
+	TILE_CLIFF_NORTHEAST,
+	TILE_CLIFF_EAST,
+	TILE_CLIFF_SOUTHEAST,
+	TILE_CLIFF_SOUTH,
+	TILE_CLIFF_SOUTHWEST,
+	TILE_CLIFF_WEST,
+	TILE_CLIFF_NORTHWEST,
 }
 
 const _INVALID_ATLAS_COORD: Vector3i = Vector3i(-1, -1, -1)
 var _configs: Array[TileConfigInstance] = [
 	TileConfigInstance.new(
 		T.TILE_NONE,
-		Vector3i(-1, -1, -1),
-		Vector3i(-1, -1, -1),
+		_INVALID_ATLAS_COORD,  # render atlas coord
+		_INVALID_ATLAS_COORD,  # schematic atlas coord
 	),
 	TileConfigInstance.new(
 		T.TILE_TERRAIN_GRASS,
@@ -99,6 +107,46 @@ var _configs: Array[TileConfigInstance] = [
 		T.TILE_RAMP_GRASS_NORTHWEST_DOWN,
 		Vector3i(3, 4, 1),
 		Vector3i(3, 2, 1),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_SOUTHEAST,
+		Vector3i(0, 0, 2),
+		Vector3i(0, 0, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_SOUTH,
+		Vector3i(1, 0, 2),
+		Vector3i(1, 0, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_SOUTHWEST,
+		Vector3i(3, 0, 2),
+		Vector3i(2, 0, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_WEST,
+		Vector3i(4, 0, 2),
+		Vector3i(3, 0, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_NORTHWEST,
+		Vector3i(0, 4, 2),
+		Vector3i(0, 1, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_NORTH,
+		Vector3i(1, 4, 2),
+		Vector3i(1, 1, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_NORTHEAST,
+		Vector3i(3, 4, 2),
+		Vector3i(2, 1, 2),
+	),
+	TileConfigInstance.new(
+		T.TILE_CLIFF_EAST,
+		Vector3i(4, 4, 2),
+		Vector3i(3, 1, 2),
 	),
 ]
 

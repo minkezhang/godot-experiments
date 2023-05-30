@@ -31,4 +31,12 @@ func get_tiles() -> Array[Tile]:
 			tiles.append(Tile.new(
 				config.get_tile(), Vector3i(t.x, t.y, i),
 			))
+	for i in $Cliff.get_layers_count():
+		for t in $Cliff.get_used_cells(i):
+			var atlas = $Cliff.get_cell_atlas_coords(i, t)
+			var config = _tile_config.get_by_schematic(
+				Vector3i(atlas.x, atlas.y, $Cliff.get_cell_source_id(i, t)))
+			tiles.append(Tile.new(
+				config.get_tile(), Vector3i(t.x, t.y, i),
+			))
 	return tiles
