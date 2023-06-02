@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1f34qmfxaben"
-path="res://.godot/imported/ramp_scene.png-bd1bdd34e16139e40344b3dd38643982.ctex"
+uid="uid://dh0waai4553xd"
+path="res://.godot/imported/ramp_high.png-ac5145852f65e1c58ad0ad67a0266818.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/map/render/ramp_scene.png"
-dest_files=["res://.godot/imported/ramp_scene.png-bd1bdd34e16139e40344b3dd38643982.ctex"]
+source_file="res://assets/cliff_experiment/ramp_high.png"
+dest_files=["res://.godot/imported/ramp_high.png-ac5145852f65e1c58ad0ad67a0266818.ctex"]
 
 [params]
 

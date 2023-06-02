@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cfrpkf7phhr7c" path="res://assets/gi/gi.png" id="1_lblft"]
 
 [node name="GI" type="CharacterBody2D"]
+z_index = 1
 y_sort_enabled = true
 motion_mode = 1
 script = ExtResource("1_64dlx")

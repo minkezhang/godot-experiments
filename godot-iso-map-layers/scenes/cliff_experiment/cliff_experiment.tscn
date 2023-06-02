@@ -8,7 +8,7 @@ monitorable = false
 script = ExtResource("1_hpojq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 2
 position = Vector2(16, -8)
 texture = ExtResource("1_i2g6w")
 

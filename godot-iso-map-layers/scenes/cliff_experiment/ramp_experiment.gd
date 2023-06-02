@@ -10,15 +10,14 @@ func _ready():
 func _process(delta):
 	pass
 
+
 func _on_body_entered(body):
 	body = body as Unit
-	body.register_cliff()
-	if body.cliff_count():
-		body.z_index = 3
+	if body.mock_velocity().dot(Vector2i(-2, 1)) > 0:
+		body.z_index = 1
 
 
 func _on_body_exited(body):
 	body = body as Unit
-	body.unregister_cliff()
-	if not body.cliff_count():
-		body.z_index = 1
+	if body.mock_velocity().dot(Vector2i(2, -1)) > 0:
+		body.z_index = 3
