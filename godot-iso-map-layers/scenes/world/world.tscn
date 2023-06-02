@@ -7,3 +7,4 @@
 [node name="Map" parent="." instance=ExtResource("1_cc7k2")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(-100, 200)

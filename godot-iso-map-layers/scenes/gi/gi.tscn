@@ -8,13 +8,13 @@ y_sort_enabled = true
 motion_mode = 1
 script = ExtResource("1_64dlx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -8)
+polygon = PackedVector2Array(-2, -8, 2, -8, 16, -1, 16, 33, 2, 40, -2, 40, -16, 33, -16, -1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 editor_description = "1. offset
 2. z-axis = ground + 1
 3. need bridge layer transition tile with offset == bridge + 1
 4. custom data layer to record z-layer"
-y_sort_enabled = true
 texture = ExtResource("1_lblft")
-offset = Vector2(0, 8)

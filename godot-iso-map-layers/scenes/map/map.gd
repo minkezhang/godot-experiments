@@ -12,4 +12,3 @@ func _ready():
 	)
 
 	$RTSMap/Terrain.add_child(GI.instantiate())
-	print("HI----------------------------", GI.instantiate().z_index)

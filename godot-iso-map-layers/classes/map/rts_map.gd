@@ -13,24 +13,27 @@ const _INVALID_ATLAS_COORD = Vector2i(-1, -1)
 
 var _tile_config: TileConfig = TileConfig.new()
 
-func generate_render_atlas_sources(layer: int) -> Array[TileSetAtlasSource]:
-		var sources: Array[TileSetAtlasSource]  = []
+func generate_render_atlas_sources(layer: int) -> Array[TileSetSource]:
+		var sources: Array[TileSetSource]  = []
 		for k in range(_tile_config.RENDER_TILESET.get_source_count()):
 			var source = _tile_config.RENDER_TILESET.get_source(_tile_config.RENDER_TILESET.get_source_id(k))
 			var target = source.duplicate(
 				Node.DuplicateFlags.DUPLICATE_USE_INSTANTIATION
 			)
 			
-			var dim = source.get_atlas_grid_size()
-			for i in range(dim.x):
-				for j in range(dim.y):
-					var atlas = source.get_tile_at_coords(Vector2i(i, j))
-					if atlas != _INVALID_ATLAS_COORD:
-						target.get_tile_data(atlas, 0).texture_origin.y = (
-							source.get_tile_data(atlas, 0).texture_origin.y + layer * _CELL_OFFSET
-						)
+			if source is TileSetAtlasSource:
+				var dim = source.get_atlas_grid_size()
+				for i in range(dim.x):
+					for j in range(dim.y):
+						var atlas = source.get_tile_at_coords(Vector2i(i, j))
+						if atlas != _INVALID_ATLAS_COORD:
+							target.get_tile_data(atlas, 0).texture_origin.y = (
+								source.get_tile_data(atlas, 0).texture_origin.y + layer * _CELL_OFFSET
+							)
 					
-			target.margins = Vector2i(0, 0)
+				target.margins = Vector2i(0, 0)
+			elif source is TileSetScenesCollectionSource:
+				pass
 			sources.append(target)
 		return sources
 
@@ -57,9 +60,6 @@ func _init(tiles: Array[Tile], n_layers: int = 1):
 
 func add_tile(p: Vector3i, t: TileConfig.T):
 	var atlas = _tile_config.get_by_tile(t).get_render_atlas_coord()
-	print(_rts_map.get_node("Terrain").tile_set.get_source(
-		p.z * _tile_config.RENDER_TILESET.get_source_count() + atlas.z
-	).get_tile_data(Vector2i(atlas.x, atlas.y), 0).z_index)
 	_rts_map.get_node("Terrain").set_cell(
 		0,                                                               # layer
 		Vector2i(p.x, p.y),                                              # coords

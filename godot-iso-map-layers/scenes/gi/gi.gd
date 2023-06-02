@@ -1,7 +1,20 @@
 extends CharacterBody2D
 
+class_name Unit
+
 const SPEED = 5.0
 const JUMP_VELOCITY = -400.0
+
+var _n_cliffs: int = 0
+
+func register_cliff():
+	_n_cliffs += 1
+
+func unregister_cliff():
+	_n_cliffs -= 1
+
+func cliff_count() -> int:
+	return _n_cliffs
 
 # Z:
 # SUBTERRANEAN (TUNNEL)

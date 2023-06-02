@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://ch5f0asm7d2a4"]
+
+[ext_resource type="PackedScene" uid="uid://hqvj22ruqse" path="res://scenes/cliff_experiment/cliff_experiment.tscn" id="1_2tl3g"]
+[ext_resource type="PackedScene" uid="uid://cq5k2083y3tol" path="res://scenes/gi/gi.tscn" id="2_s35vx"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_fnqxj"]
+resource_name = "Cliff"
+scenes/1/scene = ExtResource("1_2tl3g")
+
+[sub_resource type="TileSet" id="TileSet_y2kfq"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/1 = SubResource("TileSetScenesCollectionSource_fnqxj")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+y_sort_enabled = true
+tile_set = SubResource("TileSet_y2kfq")
+format = 2
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(0, 1, 65536, 131073, 1, 65536)
+
+[node name="GI" parent="TileMap" instance=ExtResource("2_s35vx")]
+position = Vector2(130, 54)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="body_entered" from="TileMap/CliffExperiment" to="TileMap/CliffExperiment" method="_on_body_entered" flags=18]
+[connection signal="body_exited" from="TileMap/CliffExperiment" to="TileMap/CliffExperiment" method="_on_body_exited" flags=18]
+[connection signal="body_entered" from="TileMap/@CliffExperiment@153665" to="TileMap/@CliffExperiment@153665" method="_on_body_entered" flags=18]
+[connection signal="body_exited" from="TileMap/@CliffExperiment@153665" to="TileMap/@CliffExperiment@153665" method="_on_body_exited" flags=18]

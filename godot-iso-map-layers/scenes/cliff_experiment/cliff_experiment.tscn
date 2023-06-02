@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://hqvj22ruqse"]
+
+[ext_resource type="Script" path="res://scenes/cliff_experiment/cliff_experiment.gd" id="1_hpojq"]
+[ext_resource type="Texture2D" uid="uid://cdmkit6hmeo4o" path="res://assets/cliff_experiment/cliff_experiment.png" id="1_i2g6w"]
+
+[node name="CliffExperiment" type="Area2D"]
+monitorable = false
+script = ExtResource("1_hpojq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(16, -8)
+texture = ExtResource("1_i2g6w")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(23, 44)
+polygon = PackedVector2Array(41, 3, 11, -11, 11, -13, 41, -27, 41, -29, 11, -44, 8, -44, -23, 3, -23, 5, 7, 20, 11, 20, 41, 5)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

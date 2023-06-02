@@ -1,8 +1,9 @@
-[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://c1vyn6muc42wd"]
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://c1vyn6muc42wd"]
 
 [ext_resource type="Texture2D" uid="uid://dlr0jvhonfa02" path="res://assets/map/schematic/terrain.png" id="1_yfk7o"]
 [ext_resource type="Texture2D" uid="uid://dy4240i354x7s" path="res://assets/map/schematic/ramp.png" id="2_805do"]
 [ext_resource type="Texture2D" uid="uid://dmd0b6xf2ssq6" path="res://assets/map/schematic/cliff.png" id="3_c7x3k"]
+[ext_resource type="PackedScene" uid="uid://cq5k2083y3tol" path="res://scenes/gi/gi.tscn" id="4_5rq5s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p7bdk"]
 texture = ExtResource("1_yfk7o")
@@ -46,8 +47,12 @@ texture_region_size = Vector2i(64, 64)
 4:2/0 = 0
 0:0/0 = 0
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_6eguy"]
+scenes/1/scene = ExtResource("4_5rq5s")
+
 [resource]
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_p7bdk")
 sources/1 = SubResource("TileSetAtlasSource_ytnss")
 sources/2 = SubResource("TileSetAtlasSource_1cs06")
+sources/3 = SubResource("TileSetScenesCollectionSource_6eguy")
