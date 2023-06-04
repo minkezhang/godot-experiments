@@ -33,5 +33,5 @@ position = Vector2(151, 135)
 [connection signal="body_exited" from="TileMap/RampExperiment" to="TileMap/RampExperiment" method="_on_body_exited" flags=18]
 [connection signal="body_entered" from="TileMap/CliffExperiment" to="TileMap/CliffExperiment" method="_on_body_entered" flags=18]
 [connection signal="body_exited" from="TileMap/CliffExperiment" to="TileMap/CliffExperiment" method="_on_body_exited" flags=18]
-[connection signal="body_entered" from="TileMap/@CliffExperiment@222084" to="TileMap/@CliffExperiment@222084" method="_on_body_entered" flags=18]
-[connection signal="body_exited" from="TileMap/@CliffExperiment@222084" to="TileMap/@CliffExperiment@222084" method="_on_body_exited" flags=18]
+[connection signal="body_entered" from="TileMap/@CliffExperiment@223948" to="TileMap/@CliffExperiment@223948" method="_on_body_entered" flags=18]
+[connection signal="body_exited" from="TileMap/@CliffExperiment@223948" to="TileMap/@CliffExperiment@223948" method="_on_body_exited" flags=18]
